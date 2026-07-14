@@ -40,9 +40,9 @@ const env = {
 };
 const SITE = env.SITE_URL.replace(/\/$/, '');
 
-const TITLE = 'TradeForge — Automated Crypto Trading Bots for Windows';
+const TITLE = 'TradeForge — Automated Solana Trading Bots for Windows';
 const DESCRIPTION =
-  'TradeForge runs data-driven crypto trading bots locally on your Windows PC — 24/7 automated execution, full backtesting, and locally encrypted API keys. Download the free desktop client.';
+  'TradeForge runs automated Solana trading bots locally on your Windows PC — snipe new pairs, run grid & DCA strategies with Jupiter routing, and keep your wallet self-custodied with locally encrypted keys. Download the free desktop client.';
 
 // ---------- read design export ----------
 const content = readFileSync(new URL('design/TradeForge-Landing.dc.html', import.meta.url), 'utf8');

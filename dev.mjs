@@ -4,11 +4,12 @@
 // Usage: node dev.mjs   →  http://localhost:3000
 
 import { createServer } from 'node:http';
-import { readFileSync, existsSync, watch, watchFile } from 'node:fs';
+import { readFileSync, existsSync, statSync, watch, watchFile } from 'node:fs';
 import { extname, join, normalize } from 'node:path';
 import { execFile } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
-const ROOT = new URL('.', import.meta.url).pathname;
+const ROOT = fileURLToPath(new URL('.', import.meta.url));
 const PORT = Number(process.env.PORT) || 3000;
 
 const MIME = {
@@ -49,10 +50,10 @@ const server = createServer((req, res) => {
     return;
   }
 
-  let path = normalize(url.pathname).replace(/^(\.\.[/\\])+/, '');
-  if (path === '/' || path === '') path = '/index.html';
+  let path = url.pathname === '/' || url.pathname === '' ? '/index.html' : url.pathname;
+  path = normalize(path).replace(/^(\.\.[/\\])+/, '');
   const file = join(ROOT, path);
-  if (!file.startsWith(ROOT) || !existsSync(file)) {
+  if (!file.startsWith(ROOT) || !existsSync(file) || statSync(file).isDirectory()) {
     res.writeHead(404, { 'Content-Type': 'text/plain' });
     res.end('404 — not found');
     return;
