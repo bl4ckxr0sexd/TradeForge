@@ -178,6 +178,20 @@ const jsonLd = {
       url: `${SITE}/`,
       downloadUrl: env.DOWNLOAD_URL,
       image: `${SITE}/og-image.png`,
+      screenshot: [
+        `${SITE}/assets/dashboard.jpg`,
+        `${SITE}/assets/sniper.jpg`,
+        `${SITE}/assets/strategy.jpg`,
+      ],
+      featureList: [
+        'Automated 24/7 Solana trading bots',
+        'New-pair sniping with Jupiter v6 routing',
+        'Grid and DCA strategies',
+        'Rug filters and mempool scanning',
+        'Take-profit, stop-loss and trailing-stop guards',
+        'Non-custodial — local wallet key encryption',
+      ],
+      softwareRequirements: 'Windows 10 or Windows 11 (64-bit)',
       offers: [
         { '@type': 'Offer', name: 'Free Trial', price: '0', priceCurrency: 'USD' },
         { '@type': 'Offer', name: 'Pro Plan', price: '39', priceCurrency: 'USD' },
@@ -263,12 +277,17 @@ ${verification}
 <meta property="og:title" content="${TITLE}">
 <meta property="og:description" content="${DESCRIPTION}">
 <meta property="og:image" content="${SITE}/og-image.png">
+<meta property="og:image:secure_url" content="${SITE}/og-image.png">
+<meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="TradeForge dashboard — automated Solana trading bots for Windows">
+<meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${TITLE}">
 <meta name="twitter:description" content="${DESCRIPTION}">
 <meta name="twitter:image" content="${SITE}/og-image.png">
+<meta name="twitter:image:alt" content="TradeForge dashboard — automated Solana trading bots for Windows">
 <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
 ${adsTags}
 ${helmet}
