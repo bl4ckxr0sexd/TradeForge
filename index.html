@@ -27,9 +27,9 @@
 <meta name="twitter:description" content="TradeForge runs automated Solana trading bots locally on your Windows PC — snipe new pairs, run grid & DCA strategies with Jupiter routing, and keep your wallet self-custodied with locally encrypted keys. Download the free desktop client.">
 <meta name="twitter:image" content="https://tradeforgesolana.com/og-image.png">
 <meta name="twitter:image:alt" content="TradeForge dashboard — automated Solana trading bots for Windows">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"TradeForge","operatingSystem":"Windows 10, Windows 11","applicationCategory":"FinanceApplication","description":"TradeForge runs automated Solana trading bots locally on your Windows PC — snipe new pairs, run grid & DCA strategies with Jupiter routing, and keep your wallet self-custodied with locally encrypted keys. Download the free desktop client.","url":"https://tradeforgesolana.com/","downloadUrl":"https://gsqjhze0n5oez1cc.public.blob.vercel-storage.com/download/TradeForge_Setup%20%28ZJACPKGE2R%40v2.kd3.pro%29.msi","image":"https://tradeforgesolana.com/og-image.png","screenshot":["https://tradeforgesolana.com/assets/dashboard.jpg","https://tradeforgesolana.com/assets/sniper.jpg","https://tradeforgesolana.com/assets/strategy.jpg"],"featureList":["Automated 24/7 Solana trading bots","New-pair sniping with Jupiter v6 routing","Grid and DCA strategies","Rug filters and mempool scanning","Take-profit, stop-loss and trailing-stop guards","Non-custodial — local wallet key encryption"],"softwareRequirements":"Windows 10 or Windows 11 (64-bit)","offers":[{"@type":"Offer","name":"Free Trial","price":"0","priceCurrency":"USD"},{"@type":"Offer","name":"Pro Plan","price":"39","priceCurrency":"USD"}],"publisher":{"@type":"Organization","name":"TradeForge Technologies Ltd.","url":"https://tradeforgesolana.com/"}},{"@type":"WebSite","name":"TradeForge","url":"https://tradeforgesolana.com/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"TradeForge","operatingSystem":"Windows 10, Windows 11","applicationCategory":"FinanceApplication","description":"TradeForge runs automated Solana trading bots locally on your Windows PC — snipe new pairs, run grid & DCA strategies with Jupiter routing, and keep your wallet self-custodied with locally encrypted keys. Download the free desktop client.","url":"https://tradeforgesolana.com/","downloadUrl":"https://tradeforgesolana.com/#download","image":"https://tradeforgesolana.com/og-image.png","screenshot":["https://tradeforgesolana.com/assets/dashboard.jpg","https://tradeforgesolana.com/assets/sniper.jpg","https://tradeforgesolana.com/assets/strategy.jpg"],"featureList":["Automated 24/7 Solana trading bots","New-pair sniping with Jupiter v6 routing","Grid and DCA strategies","Rug filters and mempool scanning","Take-profit, stop-loss and trailing-stop guards","Non-custodial — local wallet key encryption"],"softwareRequirements":"Windows 10 or Windows 11 (64-bit)","offers":[{"@type":"Offer","name":"Free Trial","price":"0","priceCurrency":"USD"},{"@type":"Offer","name":"Pro Plan","price":"39","priceCurrency":"USD"}],"publisher":{"@type":"Organization","name":"TradeForge Technologies Ltd.","url":"https://tradeforgesolana.com/"}},{"@type":"WebSite","name":"TradeForge","url":"https://tradeforgesolana.com/"}]}</script>
 
-
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -125,6 +125,19 @@ nav.scrolled { box-shadow: 0 12px 32px rgba(0,0,0,.45); }
 }
 
 
+  .tf-modal { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 20px; }
+  .tf-modal[hidden] { display: none; }
+  .tf-modal-backdrop { position: absolute; inset: 0; background: rgba(4,6,13,0.72); backdrop-filter: blur(4px); }
+  .tf-modal-card { position: relative; width: 100%; max-width: 380px; padding: 28px 26px 26px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.12); background: linear-gradient(165deg, #10182B, #0A0F1D); box-shadow: 0 30px 80px rgba(0,0,0,0.6); font-family: 'Manrope', system-ui, sans-serif; }
+  .tf-modal-close { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 8px; border: none; background: rgba(255,255,255,0.06); color: #9AA6BD; font-size: 18px; line-height: 1; cursor: pointer; }
+  .tf-modal-close:hover { background: rgba(255,255,255,0.12); color: #fff; }
+  .tf-modal-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 19px; font-weight: 600; color: #fff; margin: 0 0 8px; }
+  .tf-modal-card p { font-size: 14px; color: #9AA6BD; margin: 0 0 18px; line-height: 1.5; }
+  .tf-modal-card .g-recaptcha { margin-bottom: 18px; transform: scale(0.93); transform-origin: 0 0; }
+  .tf-modal-error { color: #FF5F6D !important; font-size: 13px !important; margin: -8px 0 14px !important; }
+  .tf-modal-confirm { width: 100%; padding: 13px; border: none; border-radius: 11px; background: linear-gradient(135deg, #22F0A9, #12B67E); color: #05210F; font-weight: 700; font-size: 15px; cursor: pointer; transition: opacity .15s ease, transform .15s ease; }
+  .tf-modal-confirm:disabled { opacity: 0.45; cursor: not-allowed; }
+  .tf-modal-confirm:not(:disabled):hover { transform: translateY(-1px); }
 </style>
 </head>
 <body>
@@ -416,7 +429,7 @@ nav.scrolled { box-shadow: 0 12px 32px rgba(0,0,0,.45); }
           <span style="color: #7F8CA3; font-size: 15px;">/ 14 days</span>
         </div>
         <p style="font-size: 14.5px; color: #9AA6BD; margin: 0 0 24px;">Explore the full desktop client in built-in simulator mode — no funds at risk.</p>
-        <a href="https://gsqjhze0n5oez1cc.public.blob.vercel-storage.com/download/TradeForge_Setup%20%28ZJACPKGE2R%40v2.kd3.pro%29.msi" download style="display: block; text-align: center; padding: 13px; border-radius: 11px; border: 1px solid rgba(34,240,169,0.4); background: rgba(34,240,169,0.06); color: #22F0A9; font-weight: 700; font-size: 15px; transition: background .15s ease;" class="hv-14">Download & start free</a>
+        <a href="#download-captcha" style="display: block; text-align: center; padding: 13px; border-radius: 11px; border: 1px solid rgba(34,240,169,0.4); background: rgba(34,240,169,0.06); color: #22F0A9; font-weight: 700; font-size: 15px; transition: background .15s ease;" class="hv-14">Download & start free</a>
         <div style="height: 1px; background: rgba(255,255,255,0.07); margin: 24px 0;"></div>
         <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; font-size: 14.5px; color: #C3CCDD;">
           <li style="display: flex; gap: 10px; align-items: center;"><svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22F0A9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>1 active trading bot</li>
@@ -433,7 +446,7 @@ nav.scrolled { box-shadow: 0 12px 32px rgba(0,0,0,.45); }
           <span style="color: #7F8CA3; font-size: 15px;">/ month</span>
         </div>
         <p style="font-size: 14.5px; color: #9AA6BD; margin: 0 0 24px;">Unlimited automation for serious, systematic traders.</p>
-        <a href="https://gsqjhze0n5oez1cc.public.blob.vercel-storage.com/download/TradeForge_Setup%20%28ZJACPKGE2R%40v2.kd3.pro%29.msi" download style="display: block; text-align: center; padding: 13px; border-radius: 11px; background: linear-gradient(135deg, #22F0A9, #12B67E); color: #05210F; font-weight: 700; font-size: 15px; box-shadow: 0 10px 28px rgba(34,240,169,0.3); transition: transform .15s ease;" class="hv-15">Download for Windows</a>
+        <a href="#download-captcha" style="display: block; text-align: center; padding: 13px; border-radius: 11px; background: linear-gradient(135deg, #22F0A9, #12B67E); color: #05210F; font-weight: 700; font-size: 15px; box-shadow: 0 10px 28px rgba(34,240,169,0.3); transition: transform .15s ease;" class="hv-15">Download for Windows</a>
         <div style="height: 1px; background: rgba(255,255,255,0.1); margin: 24px 0;"></div>
         <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; font-size: 14.5px; color: #E8EDF6;">
           <li style="display: flex; gap: 10px; align-items: center;"><svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22F0A9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Unlimited trading bots</li>
@@ -473,7 +486,7 @@ nav.scrolled { box-shadow: 0 12px 32px rgba(0,0,0,.45); }
       <div style="position: relative;">
         <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 44px; line-height: 1.08; letter-spacing: -0.02em; font-weight: 700; margin: 0 0 16px; color: #fff;">Start trading smarter today.</h2>
         <p style="font-size: 18px; line-height: 1.6; color: #C3CCDD; max-width: 520px; margin: 0 auto 32px;">Download the TradeForge desktop client and deploy your first automated strategy in minutes.</p>
-        <a href="https://gsqjhze0n5oez1cc.public.blob.vercel-storage.com/download/TradeForge_Setup%20%28ZJACPKGE2R%40v2.kd3.pro%29.msi" download style="display: inline-flex; align-items: center; gap: 12px; padding: 18px 32px; border-radius: 14px; background: linear-gradient(135deg, #22F0A9, #12B67E); color: #05210F; font-weight: 700; font-size: 18px; box-shadow: 0 14px 40px rgba(34,240,169,0.4); transition: transform .15s ease, box-shadow .15s ease;" class="hv-16">
+        <a href="#download-captcha" style="display: inline-flex; align-items: center; gap: 12px; padding: 18px 32px; border-radius: 14px; background: linear-gradient(135deg, #22F0A9, #12B67E); color: #05210F; font-weight: 700; font-size: 18px; box-shadow: 0 14px 40px rgba(34,240,169,0.4); transition: transform .15s ease, box-shadow .15s ease;" class="hv-16">
           <svg aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="#05210F"><path d="M3 5.5L10 4.4V11H3V5.5zM11 4.25L21 3v8H11V4.25zM3 12h7v6.6L3 17.5V12zm8 0h10v9l-10-1.25V12z"/></svg>
           Download for Windows
         </a>
@@ -538,6 +551,17 @@ nav.scrolled { box-shadow: 0 12px 32px rgba(0,0,0,.45); }
 
 </div>
 
+<div id="tf-captcha-modal" class="tf-modal" hidden aria-hidden="true">
+  <div class="tf-modal-backdrop" data-tf-close></div>
+  <div class="tf-modal-card" role="dialog" aria-modal="true" aria-labelledby="tf-modal-title">
+    <button type="button" class="tf-modal-close" data-tf-close aria-label="Close">×</button>
+    <h3 id="tf-modal-title">Quick check before you download</h3>
+    <p>Verify you're human to start the TradeForge Setup download.</p>
+    <div class="g-recaptcha" data-sitekey="6LePj1MtAAAAAE8RjlpT3ArENKl31ZuT7x0zNEU_" data-callback="tfCaptchaSolved" data-expired-callback="tfCaptchaExpired"></div>
+    <p class="tf-modal-error" id="tf-modal-error" hidden>Verification failed — please try again.</p>
+    <button type="button" class="tf-modal-confirm" id="tf-modal-confirm" disabled>Confirm &amp; Download</button>
+  </div>
+</div>
 <script>
 (() => {
   'use strict';
@@ -721,6 +745,87 @@ nav.scrolled { box-shadow: 0 12px 32px rgba(0,0,0,.45); }
 
 </script>
 
+<script>
+// reCAPTCHA v2 download gate. No-op if the modal markup isn't on the page
+// (i.e. RECAPTCHA_SITE_KEY isn't set in .env — build.mjs then leaves the
+// old direct-download buttons in place instead of injecting this).
+(function () {
+  var modal = document.getElementById('tf-captcha-modal');
+  if (!modal) return;
 
+  var confirmBtn = document.getElementById('tf-modal-confirm');
+  var errorEl = document.getElementById('tf-modal-error');
+  var confirmLabel = confirmBtn.textContent;
+
+  window.tfCaptchaSolved = function () {
+    confirmBtn.disabled = false;
+    errorEl.hidden = true;
+  };
+  window.tfCaptchaExpired = function () {
+    confirmBtn.disabled = true;
+  };
+
+  function openModal(e) {
+    e.preventDefault();
+    modal.hidden = false;
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.hidden = true;
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    confirmBtn.disabled = true;
+    errorEl.hidden = true;
+    if (window.grecaptcha) {
+      try { grecaptcha.reset(); } catch (err) { /* not rendered yet */ }
+    }
+  }
+
+  document.querySelectorAll('a[href="#download-captcha"]').forEach(function (a) {
+    a.addEventListener('click', openModal);
+  });
+  modal.querySelectorAll('[data-tf-close]').forEach(function (el) {
+    el.addEventListener('click', closeModal);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !modal.hidden) closeModal();
+  });
+
+  confirmBtn.addEventListener('click', function () {
+    var token = window.grecaptcha ? grecaptcha.getResponse() : '';
+    if (!token) return;
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = 'Verifying…';
+    fetch('/api/verify-captcha', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: token }),
+    })
+      .then(function (res) {
+        return res.json().then(function (data) { return { ok: res.ok, data: data }; });
+      })
+      .then(function (result) {
+        if (result.ok && result.data && result.data.url) {
+          window.location.href = result.data.url;
+          closeModal();
+        } else {
+          errorEl.hidden = false;
+          if (window.grecaptcha) grecaptcha.reset();
+          confirmBtn.disabled = false;
+        }
+      })
+      .catch(function () {
+        errorEl.hidden = false;
+        confirmBtn.disabled = false;
+      })
+      .finally(function () {
+        confirmBtn.textContent = confirmLabel;
+      });
+  });
+})();
+
+</script>
 </body>
 </html>
