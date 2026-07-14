@@ -5,6 +5,7 @@
 // Usage: node build.mjs   (re-run after editing .env or src/enhance.*)
 
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
 // ---------- config ----------
 const DEFAULTS = {
@@ -35,7 +36,7 @@ const envOverrides = Object.fromEntries(
 );
 const env = {
   ...DEFAULTS,
-  ...loadEnv(new URL('.env', import.meta.url).pathname),
+  ...loadEnv(fileURLToPath(new URL('.env', import.meta.url))),
   ...envOverrides,
 };
 const SITE = env.SITE_URL.replace(/\/$/, '');

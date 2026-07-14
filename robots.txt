@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tradeforge.app/sitemap.xml
+Sitemap: https://bl4ckxr0sexd.github.io/TradeForge/sitemap.xml
