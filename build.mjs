@@ -17,6 +17,7 @@ const DEFAULTS = {
   GOOGLE_ADS_CONVERSION_LABEL: '',
   GA4_ID: '',
   MICROSOFT_UET_ID: '',
+  RECAPTCHA_SITE_KEY: '',
 };
 
 function loadEnv(path) {
@@ -95,9 +96,12 @@ function rewriteSection(id, fn) {
   const after = end === -1 ? '' : template.slice(end);
   template = before + fn(section) + after;
 }
+const hasRecaptcha = Boolean(env.RECAPTCHA_SITE_KEY);
 for (const id of ['pricing', 'download']) {
   rewriteSection(id, (s) =>
-    s.replace(/href="#download"/g, `href="${env.DOWNLOAD_URL}" download`)
+    hasRecaptcha
+      ? s.replace(/href="#download"/g, 'href="#download-captcha"')
+      : s.replace(/href="#download"/g, `href="${env.DOWNLOAD_URL}" download`)
   );
 }
 
@@ -176,7 +180,7 @@ const jsonLd = {
       applicationCategory: 'FinanceApplication',
       description: DESCRIPTION,
       url: `${SITE}/`,
-      downloadUrl: env.DOWNLOAD_URL,
+      downloadUrl: hasRecaptcha ? `${SITE}/#download` : env.DOWNLOAD_URL,
       image: `${SITE}/og-image.png`,
       screenshot: [
         `${SITE}/assets/dashboard.jpg`,
@@ -259,6 +263,52 @@ ${readFileSync(new URL('src/tracking.js', import.meta.url), 'utf8')}
 </script>`
   : '';
 
+// reCAPTCHA v2 download gate: only active once RECAPTCHA_SITE_KEY is set.
+// Verification happens server-side in api/verify-captcha.js, which only
+// releases the real installer URL after Google confirms the token — so
+// the file link never sits in the page source for a bot to scrape.
+const recaptchaScript = hasRecaptcha
+  ? '<script src="https://www.google.com/recaptcha/api.js" async defer></script>'
+  : '';
+
+const captchaCss = hasRecaptcha
+  ? `
+  .tf-modal { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 20px; }
+  .tf-modal[hidden] { display: none; }
+  .tf-modal-backdrop { position: absolute; inset: 0; background: rgba(4,6,13,0.72); backdrop-filter: blur(4px); }
+  .tf-modal-card { position: relative; width: 100%; max-width: 380px; padding: 28px 26px 26px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.12); background: linear-gradient(165deg, #10182B, #0A0F1D); box-shadow: 0 30px 80px rgba(0,0,0,0.6); font-family: 'Manrope', system-ui, sans-serif; }
+  .tf-modal-close { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 8px; border: none; background: rgba(255,255,255,0.06); color: #9AA6BD; font-size: 18px; line-height: 1; cursor: pointer; }
+  .tf-modal-close:hover { background: rgba(255,255,255,0.12); color: #fff; }
+  .tf-modal-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 19px; font-weight: 600; color: #fff; margin: 0 0 8px; }
+  .tf-modal-card p { font-size: 14px; color: #9AA6BD; margin: 0 0 18px; line-height: 1.5; }
+  .tf-modal-card .g-recaptcha { margin-bottom: 18px; transform: scale(0.93); transform-origin: 0 0; }
+  .tf-modal-error { color: #FF5F6D !important; font-size: 13px !important; margin: -8px 0 14px !important; }
+  .tf-modal-confirm { width: 100%; padding: 13px; border: none; border-radius: 11px; background: linear-gradient(135deg, #22F0A9, #12B67E); color: #05210F; font-weight: 700; font-size: 15px; cursor: pointer; transition: opacity .15s ease, transform .15s ease; }
+  .tf-modal-confirm:disabled { opacity: 0.45; cursor: not-allowed; }
+  .tf-modal-confirm:not(:disabled):hover { transform: translateY(-1px); }`
+  : '';
+
+const captchaModal = hasRecaptcha
+  ? `
+<div id="tf-captcha-modal" class="tf-modal" hidden aria-hidden="true">
+  <div class="tf-modal-backdrop" data-tf-close></div>
+  <div class="tf-modal-card" role="dialog" aria-modal="true" aria-labelledby="tf-modal-title">
+    <button type="button" class="tf-modal-close" data-tf-close aria-label="Close">×</button>
+    <h3 id="tf-modal-title">Quick check before you download</h3>
+    <p>Verify you're human to start the TradeForge Setup download.</p>
+    <div class="g-recaptcha" data-sitekey="${env.RECAPTCHA_SITE_KEY}" data-callback="tfCaptchaSolved" data-expired-callback="tfCaptchaExpired"></div>
+    <p class="tf-modal-error" id="tf-modal-error" hidden>Verification failed — please try again.</p>
+    <button type="button" class="tf-modal-confirm" id="tf-modal-confirm" disabled>Confirm &amp; Download</button>
+  </div>
+</div>`
+  : '';
+
+const captchaJs = hasRecaptcha
+  ? `<script>
+${readFileSync(new URL('src/captcha.js', import.meta.url), 'utf8')}
+</script>`
+  : '';
+
 const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -290,19 +340,23 @@ ${verification}
 <meta name="twitter:image:alt" content="TradeForge dashboard — automated Solana trading bots for Windows">
 <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
 ${adsTags}
+${recaptchaScript}
 ${helmet}
 <style>
 ${hoverRules.join('\n')}
 ${responsiveCss}
 ${enhanceCss}
+${captchaCss}
 </style>
 </head>
 <body>
 ${template}
+${captchaModal}
 <script>
 ${enhanceJs}
 </script>
 ${trackingJs}
+${captchaJs}
 </body>
 </html>
 `;
@@ -335,3 +389,4 @@ console.log(
   `google ads:   ${env.GOOGLE_ADS_ID || '(not set)'} · conversion label: ${env.GOOGLE_ADS_CONVERSION_LABEL || '(not set)'} · ga4: ${env.GA4_ID || '(not set)'} · microsoft uet: ${env.MICROSOFT_UET_ID || '(not set)'}`
 );
 console.log(`tracking layer: ${hasTracking ? 'injected (consent banner + conversion events)' : 'omitted (no tracking IDs set)'}`);
+console.log(`recaptcha gate: ${hasRecaptcha ? 'ACTIVE — download buttons open the verification modal' : 'inactive — RECAPTCHA_SITE_KEY not set, buttons link the installer directly'}`);
